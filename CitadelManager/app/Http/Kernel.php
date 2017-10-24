@@ -37,9 +37,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            //'throttle:60,1',
-            //'bindings',
-            'web'
+            'throttle:60,1',
+            'bindings',
         ],
     ];
 
@@ -53,10 +52,11 @@ class Kernel extends HttpKernel
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'auth.basic.once' => \App\Http\Middleware\AuthenticateOnceWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,        
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-	'canInstall' => \RachidLaasri\LaravelInstaller\Middleware\canInstall::class,
+	    'canInstall' => \RachidLaasri\LaravelInstaller\Middleware\canInstall::class,
         'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
         'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
