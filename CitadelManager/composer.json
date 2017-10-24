@@ -6,8 +6,12 @@
     "type": "project",
     "require": {
         "php": ">=5.6.4",
+        "doctrine/dbal": "^2.6",
+        "guzzlehttp/guzzle": "^6.2",
         "laravel/framework": "5.4.*",
+        "laravel/passport": "^3.0",
         "laravel/tinker": "~1.0",
+        "mnabialek/laravel-sql-logger": "^1.1",
         "rachidlaasri/laravel-installer": "1.5",
         "yadakhov/insert-on-duplicate-key": "^1.1",
         "zizaco/entrust": "1.9.0-beta1"
