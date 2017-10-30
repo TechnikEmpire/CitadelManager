@@ -162,6 +162,8 @@ namespace Citadel
 
         private m_textTriggerMaxSizeInput : HTMLInputElement;
 
+        private m_updateChannelSelectInput : HTMLSelectElement;
+
         /**
          * Text area where users can list applications, one per line, that should be treated as a 
          * whitelist or blacklist by the filtering app for which applications to filter.
@@ -427,6 +429,7 @@ namespace Citadel
 
             this.m_groupNlpThresholdInput = document.querySelector('#editor_cfg_nlp_threshold_input') as HTMLInputElement;
             this.m_textTriggerMaxSizeInput = document.querySelector('#editor_cfg_trigger_max_size_input') as HTMLInputElement;
+            this.m_updateChannelSelectInput = document.querySelector('#editor_cfg_update_channel_input') as HTMLSelectElement;
             
 
             // Enforce input range when typing. Since this represents a percent, should
@@ -705,6 +708,7 @@ namespace Citadel
                     'BypassDuration': this.m_antiTamperBypassDurationInput.valueAsNumber,
                     'NlpThreshold' : this.m_groupNlpThresholdInput.valueAsNumber,
                     'MaxTextTriggerScanningSize': this.m_textTriggerMaxSizeInput.valueAsNumber,
+                    'UpdateChannel' : this.m_updateChannelSelectInput.options[this.m_updateChannelSelectInput.selectedIndex].value,
                 };
 
             appConfig[filterAppsKey] = allFilteredAppLines;
@@ -730,9 +734,8 @@ namespace Citadel
             }
         }
 
-        public StartEditing(allFilters: DataTables.DataTable, data: Object = null): void
+        public StartEditing(allFilters: DataTables.DataTable, data: Object = null, cloneData: Object = null): void
         {
-            console.log(data);
             let clearListContainer = ((container: HTMLDivElement): void =>
             {
                 let assignedChildren = container.querySelectorAll('div[citadel-filter-list-id]');
@@ -773,6 +776,7 @@ namespace Citadel
 
             this.m_groupNlpThresholdInput.valueAsNumber = 0;
             this.m_textTriggerMaxSizeInput.valueAsNumber = -1;
+            this.m_updateChannelSelectInput.selectedIndex = 0;
 
             this.m_groupUpdateCheckFrequencyInput.valueAsNumber = 5;
             this.m_groupPrimaryDnsInput.value = '';
@@ -904,6 +908,25 @@ namespace Citadel
                         this.m_antiTamperBypassDurationInput.valueAsNumber = parseInt(this.m_appConfig['BypassDuration']);
                         this.m_groupNlpThresholdInput.valueAsNumber = parseFloat(this.m_appConfig['NlpThreshold']);
                         this.m_textTriggerMaxSizeInput.valueAsNumber = parseInt(this.m_appConfig['MaxTextTriggerScanningSize']);
+                        
+                        try
+                        {
+                            for(let i = 0; i < this.m_updateChannelSelectInput.options.length; ++i)
+                            {
+                                if(this.m_updateChannelSelectInput.options[i].value.toLowerCase() == <string>this.m_appConfig['UpdateChannel'].toLowerCase())
+                                {
+                                    this.m_updateChannelSelectInput.selectedIndex = this.m_updateChannelSelectInput.options[i].index;
+                                    break;
+                                }
+                            }
+                        }
+                        catch(ex)
+                        {
+                            console.warn(ex);
+                            console.warn("Either the update channel is null or it's an invalid value. Defaulting...");
+                            this.m_updateChannelSelectInput.selectedIndex = 0;
+                        }
+                        
                         this.m_groupUpdateCheckFrequencyInput.valueAsNumber = parseInt(this.m_appConfig['UpdateFrequency']);
                         this.m_groupPrimaryDnsInput.value = this.m_appConfig['PrimaryDns'];
                         this.m_groupSecondaryDnsInput.value = this.m_appConfig['SecondaryDns'];
@@ -955,6 +978,93 @@ namespace Citadel
                     break;
             }
 
+            if(cloneData != null) {
+                // Set data with clone data
+                this.m_editorTitle.innerText = "Clone Group";
+                this.m_submitBtn.innerText = "Clone Group";
+                this.LoadFromObject(cloneData);
+                this.m_groupId = undefined;
+                this.m_groupNameInput.value = this.m_groupName + "-cloned";
+                this.m_isActiveInput.checked = this.m_isActive != 0;
+
+                this.m_antiTamperNoTerminateInput.checked = this.m_appConfig['CannotTerminate'];
+                this.m_antiTamperDisableInternetInput.checked = this.m_appConfig['BlockInternet'];
+                this.m_antiTamperUseThresholdInput.checked = this.m_appConfig['UseThreshold'];
+                this.m_antiTamperThresholdCountInput.valueAsNumber = parseInt(this.m_appConfig['ThresholdLimit']);
+                this.m_antiTamperThresholdTriggerPeriodInput.valueAsNumber = parseInt(this.m_appConfig['ThresholdTriggerPeriod']);
+                this.m_antiTamperThresholdTimeoutInput.valueAsNumber = parseInt(this.m_appConfig['ThresholdTimeoutPeriod']);
+                this.m_antiTamperBypassesPerDayInput.valueAsNumber = parseInt(this.m_appConfig['BypassesPermitted']);
+                this.m_antiTamperBypassDurationInput.valueAsNumber = parseInt(this.m_appConfig['BypassDuration']);
+                this.m_groupNlpThresholdInput.valueAsNumber = parseFloat(this.m_appConfig['NlpThreshold']);
+                this.m_textTriggerMaxSizeInput.valueAsNumber = parseInt(this.m_appConfig['MaxTextTriggerScanningSize']);
+                
+                try
+                {
+                    for(let i = 0; i < this.m_updateChannelSelectInput.options.length; ++i)
+                    {
+                        if(this.m_updateChannelSelectInput.options[i].value.toLowerCase() == <string>this.m_appConfig['UpdateChannel'].toLowerCase())
+                        {
+                            this.m_updateChannelSelectInput.selectedIndex = this.m_updateChannelSelectInput.options[i].index;
+                            break;
+                        }
+                    }
+                }
+                catch(ex)
+                {
+                    console.warn(ex);
+                    console.warn("Either the update channel is null or it's an invalid value. Defaulting...");
+                    this.m_updateChannelSelectInput.selectedIndex = 0;
+                }
+                
+                this.m_groupUpdateCheckFrequencyInput.valueAsNumber = parseInt(this.m_appConfig['UpdateFrequency']);
+                this.m_groupPrimaryDnsInput.value = this.m_appConfig['PrimaryDns'];
+                this.m_groupSecondaryDnsInput.value = this.m_appConfig['SecondaryDns'];
+
+                if(this.m_groupPrimaryDnsInput.value == 'undefined')
+                {
+                    this.m_groupPrimaryDnsInput.value = '';
+                }
+
+                if(this.m_groupSecondaryDnsInput.value == 'undefined')
+                {
+                    this.m_groupSecondaryDnsInput.value = '';
+                }
+
+                let savedFilteredAppsList: Array<String>;
+
+                if ('BlacklistedApplications' in this.m_appConfig)
+                {
+                    this.m_filteredApplicationsAsBlacklistInput.checked = true;
+                    this.m_filteredApplicationsAsWhitelistInput.checked = false;
+
+                    savedFilteredAppsList = this.m_appConfig['BlacklistedApplications'];
+                }
+                else if ('WhitelistedApplications' in this.m_appConfig)
+                {
+                    this.m_filteredApplicationsAsBlacklistInput.checked = false;
+                    this.m_filteredApplicationsAsWhitelistInput.checked = true;
+                    savedFilteredAppsList = this.m_appConfig['WhitelistedApplications'];
+                }
+                else
+                {
+                    // Default
+                    this.m_filteredApplicationsAsBlacklistInput.checked = true;
+                    this.m_filteredApplicationsAsWhitelistInput.checked = false;
+                }
+
+                if (savedFilteredAppsList != null)
+                {
+                    savedFilteredAppsList.forEach((line: String): void =>
+                    {
+                        line = line.trim();
+                        if(line.length > 0)
+                        {
+                            this.m_filteredApplicationsList.value += line + "\n";
+                        }
+                    });
+                }
+            }
+
             this.m_mainForm.onsubmit = ((e: Event): any =>
             {
                 let validateOpts = this.ValidationOptions;
@@ -993,7 +1103,6 @@ namespace Citadel
                     'assigned_filter_ids': this.m_assignedFilterIds,
                     'app_cfg': JSON.stringify(this.m_appConfig)
                 };
-
             return obj;
         }
     }
