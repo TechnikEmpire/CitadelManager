@@ -102,6 +102,7 @@
                             </div>
                             
                             <div class="row cells3">
+                                
                                 <div class="cell" id="div_ea30_6">
                                     <label for="editor_cfg_trigger_max_size_input">Text Trigger Scan Window Size (-1 for unlimited)</label>
                                     <br>
@@ -110,6 +111,20 @@
                                         <input type="number" id="editor_cfg_trigger_max_size_input" name="editor_cfg_trigger_max_size_input" min="-1" value="-1">                                    
                                     </label>
                                 </div>
+                                
+                                <div class="cell" id="div_ea30_6">
+                                    <label for="editor_cfg_update_channel_input">Update Channel</label>
+                                    <br>
+                                    <br>
+                                    <div class="input-control select" data-role="input">
+                                        <select name="editor_cfg_update_channel_input" id="editor_cfg_update_channel_input" >
+                                            <option value="Stable">Stable</option>
+                                            <option value="Alpha">Alpha</option>
+                                            <option value="Beta">Beta</option>
+                                        </select>                        
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
                     </form>
@@ -214,21 +229,9 @@
                 <div class="frame"  id="rule_selection_tab">
 
                     <div id="div_ea30_15">
-                        <ul class="inline-list icon-list">
-                            <li>
-                                <span class="mif-filter"></span> Filtering rules. These match specific request strings.
-                            </li>
-                            <br>
-                            <br>
-                            <li>
-                                <span class="mif-language"></span> Natural Language Processing. These categories will cause a block action when the text payload of a website is deemed to belong to selected categories.
-                            </li>
-                            <br>
-                            <br>
-                            <li>
-                                <span class="mif-warning"></span> Text triggers. These will cause blocking to happen if any of their content is detected in any text payload. Use these sparingly, in fact you should probably only use triggers for pornography.
-                            </li>
-                        </ul>
+                        <p><span class="mif-filter fg-green" ></span>&nbsp;&nbsp;&nbsp;Filtering rules. These match specific request strings.</p>
+                        <p><span class="mif-language"></span>&nbsp;&nbsp;&nbsp;Natural Language Processing. These categories will cause a block action when the text payload of a website is deemed to belong to selected categories.</p>
+                        <p><span class="mif-warning fg-red"></span>&nbsp;&nbsp;&nbsp;Text triggers. These will cause blocking to happen if any of their content is detected in any text payload. Use these sparingly, in fact you should probably only use triggers for pornography.</p>                        
                     </div>
 
                     <br>
