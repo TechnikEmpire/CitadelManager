@@ -38,3 +38,14 @@ Route::get('/', function () {
         return redirect('/login');
     }
 });
+
+Route::get('/update/win{platform}/update.xml', 'UpdateController@retrieve');
+
+Route::get('/download/latest/64', function() {
+  return redirect('/releases/CloudVeil-1.6.14-x64.msi');
+});
+
+Route::get('/download/latest/32', function() {
+  return redirect('/releases/CloudVeil-1.6.14-x86.msi');
+});
+

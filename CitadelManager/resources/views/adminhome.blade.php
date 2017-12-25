@@ -17,6 +17,8 @@
         <li id="btn_tab_groups"><a href="#tab_groups">Groups</a></li>
         <li id="btn_filter_lists"><a href="#tab_filter_lists">Filter Lists</a></li>
         <li id="btn_user_deactivation_requests"><a href="#tab_user_deactivation_requests">Deactivation Requests</a></li>
+        <li id="btn_tab_app_groups"><a href="#tab_app_groups">Application Groups</a></li>
+        <li id="btn_app_user_activations"><a href="#tab_app_user_activations">App User Activations</a></li>
     </ul>
 
     <!-- Primary menu contents container. -->
@@ -59,6 +61,15 @@
                     </div>
                 </div>
                 <div class="tab-group-caption">Creation / Deletion</div>
+            </div>
+            <div class="tab-panel-group">
+                <div class="tab-group-content">
+                    <button id="btn_group_clone" class="fluent-big-button">
+                        <span class="icon mif-users"></span> Clone
+                        <br>Group
+                    </button>
+                </div>
+                <div class="tab-group-caption">Clone Groups</div>
             </div>
         </div>
 
@@ -119,6 +130,76 @@
                 <div class="tab-group-caption">Reply</div>
             </div>
         </div>
+
+         <!-- App groups tab. -->
+        <div class="tab-panel" id="tab_app_groups" style="display: none;">
+            <div class="tab-panel-group">
+                <div class="tab-group-content">
+                    <div class="tab-content-segment">
+                        <!-- Default state of all delete buttons should be disabled. -->
+                         <label class="input-control radio">
+                            <input id="global_radio_app" type="radio" name="global_app_n1" checked>
+                            <span class="check"></span>
+                            <span class="caption">Application</span>
+                        </label>
+                        <br>
+                        <label class="input-control radio">
+                            <input id="global_radio_app_group" type="radio" name="global_app_n1">
+                            <span class="check"></span>
+                            <span class="caption">Application Groups</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-panel-group">
+                <div class="tab-group-content">
+                    <button id="btn_application_add" class="fluent-big-button">
+                        <span class="icon mif-stack"></span> Add
+                        <br>Application
+                    </button>
+                    <div class="tab-content-segment">
+                        <!-- Default state of all delete buttons should be disabled. -->
+                        <button id="btn_application_remove" class="fluent-big-button" disabled>
+                            <span class="mif-cancel"></span>
+                            <span class="label">Remove<br>Application</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tab-group-caption">Add / Remove</div>
+            </div>
+            <div class="tab-panel-group">
+                <div class="tab-group-content">
+                    <button id="btn_apply_group" class="fluent-big-button">
+                        <span class="icon mif-checkmark" style="color:green"></span> Apply
+                        <br>To Group
+                    </button>
+                </div>
+                <div class="tab-group-caption">Apply</div>
+            </div>
+        </div>
+
+
+        <!-- App User Activations tab. -->
+        <div class="tab-panel" id="tab_app_user_activations" style="display: none;">
+            <div class="tab-panel-group">
+                <div class="tab-group-content">
+                    <div class="tab-content-segment">
+                        <!-- Default state of all delete buttons should be disabled. -->
+                        <button id="btn_delete_activation" class="fluent-big-button" disabled>
+                            <span class="mif-cancel"></span>
+                            <span class="label">Retire<br/>Activations</span>
+                        </button>
+                        <div class="tab-content-segment">                                
+                            <button id="btn_block_activations" class="fluent-big-button">
+                                <span class="mif-blocked"></span>
+                                <span class="label">Block<br/>Activations</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-group-caption">Delete/Block Activations</div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -153,6 +234,24 @@
         </table>
     </div>
 
+    <!-- AppList/AppGroupList editing view. -->
+    <div id="view_app_management" style="width: 100%; min-height: 100%; position: absolute; visibility: hidden; padding: 10px;">
+        <table id="app_table" class="table striped hovered border" style="width:100%">
+
+        </table>
+    </div>
+    <div id="view_app_group_management" style="width: 100%; min-height: 100%; position: absolute; visibility: hidden; padding: 10px;">
+        <table id="app_group_table" class="table striped hovered border" style="width:100%">
+
+        </table>
+    </div>
+
+    <!-- App User Activations view. -->
+    <div id="view_app_user_activations_management" style="width: 100%; min-height: 100%; position: absolute; visibility: hidden; padding: 10px;">
+        <table id="app_user_activations_table" class="table striped hovered border">
+
+        </table>
+    </div>
 </div>
 
 <!-- Include progress-wait script/UI. -->
@@ -173,6 +272,15 @@
 <!-- Require filter list upload overlay. -->
 @include('layouts.components.listuploader')
 
+<!-- Require applist editing overlay. -->
+@include('layouts.components.appeditor')
+<!-- Require appgroup list editing overlay. -->
+@include('layouts.components.appgroupeditor')
+<!-- Require Apply Application to App group overlay. -->
+@include('layouts.components.applyapptoappgroup')
+@include('layouts.components.applyappgrouptousergroup')
+<!-- Require Apply to group overlay. -->
+@include('layouts.components.appuseractivationeditor')
 <!-- Include dashboard JS to drive UI. -->
 <script src="{{ asset('js/admin/dashboard.js') }}">
 </script>
