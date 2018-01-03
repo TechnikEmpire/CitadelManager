@@ -16,6 +16,12 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\Event' => [
             'App\Listeners\EventListener',
         ],
+        'App\Events\DeactivationRequestReceived' => [
+            'App\Listeners\SendDeactivationRequestNotification',
+        ],
+        'App\Events\DeactivationRequestGranted' => [
+            'App\Listeners\SendDeactivationRequestGrantedNotification',
+        ],
     ];
 
     /**

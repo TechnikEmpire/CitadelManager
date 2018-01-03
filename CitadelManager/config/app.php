@@ -2,6 +2,17 @@
 
 return [
 
+    'company_name' => env('APP_COMPANY_NAME', 'Citadel'),
+    /* How long (in days) do we let deactivation requests sit around? */
+    'deactivation_request_expiration' => env('APP_DEACTIVATION_REQUEST_EXPIRATION', '7'),
+
+    /* How long (in days) does a license remain in use after the last use? */
+    'license_expiration' => env('APP_LICENSE_EXPIRATION', '90'),
+
+    /* This is used to give users grace with licenses.  If you're using this you'll want to periodically
+     * audit your license usage to make sure it's not being abused. */
+    'license_overage_allowed' => env('APP_LICENSE_OVERAGE_ALLOWED', '1'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -176,8 +187,10 @@ return [
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-	RachidLaasri\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
+	    RachidLaasri\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        Mnabialek\LaravelSqlLogger\Providers\ServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
     ],
 
     /*
